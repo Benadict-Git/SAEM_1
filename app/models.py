@@ -17,3 +17,11 @@ class IrrigationSystem(BaseModel):
     status: str  # e.g., "on" or "off"
     last_activated: str
     next_scheduled: str
+
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
