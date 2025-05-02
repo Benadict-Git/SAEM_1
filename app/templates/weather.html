@@ -1,3 +1,19 @@
-<h1>Weather Forecast</h1>
-<p>Get real-time weather updates and future predictions.</p>
-<a href="/">Back to Home</a>
+{% extends "base.html" %}
+{% block title %}Weather Forecast{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h2>Check Weather</h2>
+    <form method="post">
+        <input type="text" name="city" placeholder="Enter city (e.g., Chennai)" required>
+        <button type="submit">Get Weather</button>
+    </form>
+    {% if weather %}
+        <div class="feature-card" style="margin-top: 20px;">
+            <h3>{{ weather.city }}</h3>
+            <p><strong>Temperature:</strong> {{ weather.temp }}°C</p>
+            <p><strong>Condition:</strong> {{ weather.desc }}</p>
+            <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
