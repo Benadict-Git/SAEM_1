@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-import jose
+from jose import jwt
 from datetime import datetime, timedelta
 
 SECRET_KEY = "your-secret-key-here"
@@ -17,4 +17,5 @@ def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes
     to_encode = data.copy()
     expire = datetime.utcnow() + expires_delta
     to_encode.update({"exp": expire})
-    return jose.jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+

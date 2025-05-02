@@ -1,11 +1,14 @@
-from fastapi import FastAPI, Request, Form, Depends, HTTPException
+from fastapi import FastAPI, Request, Form, HTTPException, status
 from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.security import OAuth2PasswordBearer
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from pymongo.errors import PyMongoError
+import traceback
 from app.api import weather, irrigation, soil_health
+from app.auth import hash_password, verify_password
 from app.database import user_collection
-from app.auth import hash_password, verify_password, create_access_token
+from datetime import datetime, timezone
 
 app = FastAPI()
 
@@ -40,16 +43,22 @@ async def irrigation_page(request: Request):
 async def register_get(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
-
 @app.post("/register", response_class=HTMLResponse)
 async def register_post(request: Request, username: str = Form(...), password: str = Form(...)):
-    existing_user = await user_collection.find_one({"username": username})
-    if existing_user:
-        return templates.TemplateResponse("register.html", {"request": request, "msg": "Username already exists"})
+    try:
+        existing_user = await user_collection.find_one({"username": username})
+        if existing_user:
+            return templates.TemplateResponse("register.html", {"request": request, "msg": "Username already exists"})
 
-    hashed_pw = hash_password(password)
-    await user_collection.insert_one({"username": username, "password": hashed_pw})
-    return RedirectResponse(url="/login", status_code=302)
+        hashed_pw = hash_password(password)
+        await user_collection.insert_one({"username": username, "password": hashed_pw})
+        return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
+
+    except Exception as e:
+        print("❌ Registration error occurred ❌")
+        import traceback
+        traceback.print_exc()  # <-- This gives detailed cause in terminal
+        return templates.TemplateResponse("register.html", {"request": request, "msg": "Internal server error"})
 
 
 @app.get("/login", response_class=HTMLResponse)
@@ -74,3 +83,14 @@ async def dashboard_page(request: Request):
     if not username:
         return RedirectResponse(url="/register")
     return templates.TemplateResponse("dashboard.html", {"request": request, "username": username})
+
+
+@app.post("/register")
+async def register_test():
+    from app.auth import hash_password
+    from app.database import user_collection
+    await user_collection.insert_one({
+        "username": "testuser",
+        "password": hash_password("test123")
+    })
+    return {"ok": True}
