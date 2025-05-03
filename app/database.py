@@ -12,4 +12,4 @@ if not MONGO_URL:
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URL)
 db = client.saem
-user_collection = db.users
+user_collection = db["users"]

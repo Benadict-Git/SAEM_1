@@ -9,14 +9,14 @@ router = APIRouter()
 
 @router.get("/register", response_class=HTMLResponse)
 async def register_get(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})
+    return templates.TemplateResponse("singup.html", {"request": request})
 
 @router.post("/register", response_class=HTMLResponse)
 async def register_post(request: Request, username: str = Form(...), password: str = Form(...)):
     try:
         existing_user = await user_collection.find_one({"username": username})
         if existing_user:
-            return templates.TemplateResponse("register.html", {"request": request, "msg": "Username already exists"})
+            return templates.TemplateResponse("singup.html", {"request": request, "msg": "Username already exists"})
 
         hashed_pw = hash_password(password)
         await user_collection.insert_one({"username": username, "password": hashed_pw})
@@ -24,7 +24,7 @@ async def register_post(request: Request, username: str = Form(...), password: s
     except Exception as e:
         import traceback
         traceback.print_exc()
-        return templates.TemplateResponse("register.html", {"request": request, "msg": "Internal server error"})
+        return templates.TemplateResponse("singup.html", {"request": request, "msg": "Internal server error"})
 
 @router.get("/login", response_class=HTMLResponse)
 async def login_get(request: Request):

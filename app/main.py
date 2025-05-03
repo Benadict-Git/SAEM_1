@@ -2,10 +2,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordBearer
-
-# Import routers
 from app.api import weather, irrigation, soil_health, user, home
-
+from app import auth1
 app = FastAPI()
 
 # Mount static assets
@@ -23,3 +21,5 @@ app.include_router(irrigation.router)
 app.include_router(soil_health.router)
 app.include_router(user.router)
 app.include_router(home.router)
+
+app.include_router(auth1.router)

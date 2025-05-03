@@ -1,19 +1,28 @@
-{% extends "base.html" %}
-{% block title %}Weather Forecast{% endblock %}
-{% block content %}
-<div class="form-container">
-    <h2>Check Weather</h2>
-    <form method="post">
-        <input type="text" name="city" placeholder="Enter city (e.g., Chennai)" required>
-        <button type="submit">Get Weather</button>
-    </form>
-    {% if weather %}
-        <div class="feature-card" style="margin-top: 20px;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Forecast</h1>
+        <form method="post">
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if weather %}
+        <div class="weather-result">
             <h3>{{ weather.city }}</h3>
-            <p><strong>Temperature:</strong> {{ weather.temp }}°C</p>
-            <p><strong>Condition:</strong> {{ weather.desc }}</p>
-            <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
+            <div class="weather-info">
+                <span>Temperature: {{ weather.temp }}°C</span>
+                <span>Condition: {{ weather.desc }}</span>
+                <span>Humidity: {{ weather.humidity }}%</span>
+            </div>
         </div>
-    {% endif %}
-</div>
-{% endblock %}
+        {% endif %}
+    </div>
+</body>
+</html>

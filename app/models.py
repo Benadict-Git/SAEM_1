@@ -25,3 +25,6 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     username: str
     password: str
+
+class Weather(BaseModel):
+    city: str
