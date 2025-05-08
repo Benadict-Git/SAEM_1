@@ -4,31 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SAEM{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/styles.css">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <header>
+        <h1>🌱 Smart Agricultural Ecosystem Management (SAEM)</h1>
+        <nav>
+            <ul>
+                <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+                <li><a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a></li>
+                <li><a href="/soil-health" class="{% if request.path == '/soil-health' %}active{% endif %}">Soil Health</a></li>
+                <li><a href="/weather" class="{% if request.path == '/weather' %}active{% endif %}">Weather</a></li>
+                <li><a href="/irrigation" class="{% if request.path == '/irrigation' %}active{% endif %}">Irrigation</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<header>
-    <h1>🌱 Smart Agricultural Ecosystem Management (SAEM)</h1>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/register">Dashboard</a></li>  
-            <li><a href="/soil-health">Soil Health</a></li>
-            <li><a href="/weather">Weather</a></li>
-            <li><a href="/irrigation">Irrigation</a></li>
-        </ul>
-    </nav>
-</header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
-
-<footer>
-    <p>© 2025 SAEM Project. All rights reserved.</p>
-</footer>
-
+    <footer>
+        <p>© 2025 SAEM Project. All rights reserved.</p>
+    </footer>
 </body>
 </html>

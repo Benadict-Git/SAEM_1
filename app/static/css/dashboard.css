@@ -1,0 +1,34 @@
+/* Dashboard Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Dashboard Header */
+.container h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+/* Auth Options Layout */
+.auth-options {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-card h3 {
+    color: #3498db;
+    margin-bottom: 1rem;
+}

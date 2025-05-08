@@ -6,16 +6,12 @@ from app.api import weather, irrigation, soil_health, user, home
 from app import auth1
 app = FastAPI()
 
-# Mount static assets
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-# Templates directory setup
 templates = Jinja2Templates(directory="app/templates")
 
-# OAuth2 token flow (if needed in future)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# Include all modular routers
 app.include_router(weather.router)
 app.include_router(irrigation.router)
 app.include_router(soil_health.router)

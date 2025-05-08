@@ -1,28 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Weather Forecast</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Weather Forecast</h1>
-        <form method="post">
-            <input type="text" name="city" placeholder="Enter city name" required>
-            <button type="submit">Get Weather</button>
-        </form>
+{% extends "base.html" %}
 
-        {% if weather %}
-        <div class="weather-result">
-            <h3>{{ weather.city }}</h3>
-            <div class="weather-info">
-                <span>Temperature: {{ weather.temp }}°C</span>
-                <span>Condition: {{ weather.desc }}</span>
-                <span>Humidity: {{ weather.humidity }}%</span>
+{% block title %}Weather Forecast | SAEM{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/weather.css">
+{% endblock %}
+
+{% block content %}
+<div class="weather-container">
+    <h2>Weather Forecast</h2>
+    
+    <form method="POST" action="/weather" class="weather-form">
+        <div class="form-group">
+            <input type="text" name="city" placeholder="Enter City Name" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="weather-button">Get Forecast</button>
+        </div>
+    </form>
+
+    {% if weather %}
+    <div class="weather-result">
+        <h3>Weather in {{ weather.city }}</h3>
+        <div class="weather-details">
+            <div class="weather-card temp-card">
+                <span class="weather-icon">🌡️</span>
+                <div>
+                    <p class="weather-label">Temperature</p>
+                    <p class="weather-value">{{ weather.temp }}°C</p>
+                </div>
+            </div>
+            
+            <div class="weather-card condition-card">
+                <span class="weather-icon">🌤️</span>
+                <div>
+                    <p class="weather-label">Condition</p>
+                    <p class="weather-value">{{ weather.description }}</p>
+                </div>
+            </div>
+            
+            <div class="weather-card humidity-card">
+                <span class="weather-icon">💧</span>
+                <div>
+                    <p class="weather-label">Humidity</p>
+                    <p class="weather-value">{{ weather.humidity }}%</p>
+                </div>
+            </div>
+            
+            <div class="weather-card wind-card">
+                <span class="weather-icon">🌬️</span>
+                <div>
+                    <p class="weather-label">Wind Speed</p>
+                    <p class="weather-value">{{ weather.wind_speed }} m/s</p>
+                </div>
             </div>
         </div>
-        {% endif %}
     </div>
-</body>
-</html>
+    {% endif %}
+    
+    {% if error %}
+    <div class="weather-error">
+        <p>⚠️ {{ error }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

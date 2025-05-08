@@ -1,11 +1,9 @@
+import os
+import httpx
+from dotenv import load_dotenv
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-import httpx
-from app.models import Weather
-from app import crud
-from dotenv import load_dotenv
-import os
 
 load_dotenv()
 API_KEY = os.getenv("WEATHER_API_KEY")
@@ -29,14 +27,24 @@ async def post_weather(request: Request, city: str = Form(...)):
             weather = {
                 "city": data["name"],
                 "temp": data["main"]["temp"],
-                "desc": data["weather"][0]["description"].capitalize(),
-                "humidity": data["main"]["humidity"]
+                "description": data["weather"][0]["description"].capitalize(),  # Changed "desc" to "description"
+                "humidity": data["main"]["humidity"],
+                "wind_speed": data["wind"]["speed"]  # Added wind speed
             }
         else:
-            weather = {"city": city, "temp": "--", "desc": "City not found", "humidity": "--"}
+            weather = {
+                "city": city,
+                "temp": "--",
+                "description": "City not found",
+                "humidity": "--",
+                "wind_speed": "--"
+            }
+    except Exception:
+        weather = {
+            "city": city,
+            "temp": "--",
+            "description": "City not found",
+        }
 
-    except Exception as e:
-        print("❌ Weather fetch failed:", e)
-        weather = {"city": city, "temp": "--", "desc": "Error fetching data", "humidity": "--"}
 
     return templates.TemplateResponse("weather.html", {"request": request, "weather": weather})
